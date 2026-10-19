@@ -1,0 +1,7 @@
+{
+  "name": "gamedev-solo",
+  "version": "0.1.0",
+  "description": "Long-term solo project mode: vision and pillars kickoff, full-rigor session workflow with decision log and health checks. Install with gamedev-core.",
+  "author": { "name": "Adonoo" },
+  "keywords": ["unity", "gamedev", "workflow", "solo"]
+}

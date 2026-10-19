@@ -1,0 +1,7 @@
+{
+  "name": "gamedev-jam",
+  "version": "0.1.0",
+  "description": "Game jam mode (1-3 weeks): kickoff with concept pitches and scope cuts, deadline-driven daily workflow, ship checklist. Install with gamedev-core.",
+  "author": { "name": "Adonoo" },
+  "keywords": ["unity", "gamedev", "workflow", "game-jam"]
+}

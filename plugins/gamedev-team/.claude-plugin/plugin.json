@@ -1,0 +1,7 @@
+{
+  "name": "gamedev-team",
+  "version": "0.1.0",
+  "description": "Long-term team project mode: shared repo with area ownership, decision map, branch/PR flow and Unity merge safety. Install with gamedev-core.",
+  "author": { "name": "Adonoo" },
+  "keywords": ["unity", "gamedev", "workflow", "team"]
+}
