@@ -1,64 +1,38 @@
 # <Project name> — <one-line pitch>
 
+<!-- Keep this file under ~150 lines. Decisions → docs/decisions/, lessons → .claude/rules/,
+     status → docs/status.md (solo/jam) or issues (team), recipes → .claude/skills/. -->
+
 ## How we work (read first)
 
-- **Ask before assuming.** When something is ambiguous (design, feel, scope, architecture), ask; don't guess silently.
-- **Challenge design choices, never overrule them.** Point out risks, contradictions and alternatives with reasons, then let the owner decide.
-- **Record decisions.** Settled questions go into "Design decisions" (date + reason); keep "Open questions" current.
-- **Small vertical slices.** plan → implement → verify → owner playtests → fix → commit.
-- **Game feel is verified by the owner, not by Claude.** After feel changes, say exactly what to test and which tuning values are exposed.
-- **Owner tuning is untouchable.** Values in `<data folder>` and owner-built levels in `<levels folder>` are never changed unless the owner asks.
-- **Protect owner changes in git.** Check `git status` first; commit owner changes separately (`Owner tuning: …`, `Owner level: …`); stage own files by path, never `git add -A`.
-
-## Verification lessons (learned the hard way)
-
-- _(add one line per lesson: date — what happened — the rule)_
+- **Ask before assuming.** When something is ambiguous (design, feel, scope, architecture), ask; don't guess silently. Search `docs/decisions/` before asking.
+- **Challenge, never overrule.** Point out risks, contradictions and alternatives with reasons, then the owner decides. Never build a different design than agreed.
+- **Small vertical slices:** plan → implement → verify → owner playtests → fix → commit.
+- **Feel is judged by the owner, not by Claude.** After feel changes, say what to test and which values are tunable.
+- **Owner tuning and levels are untouchable:** `<data folder>`, `<levels folder>`. Propose values; don't change them.
+- **Git:** `git status` first; owner changes get their own commit; stage by path, never `git add -A`; commit only when the owner agrees.
 
 ## Project facts
 
-- Engine: Unity <version>, <render pipeline>, <input system>, Force Text serialization.
-- Platforms / input devices: <...>
-- Version control: git (+ LFS for heavy binaries). Remote: <url>
-- Tooling: Unity CLI (`unity`), Unity Editor driven live via the `unity-cli` skill.
+- Unity <version>, <URP 3D / URP 2D>, Input System, Force Text, visible meta.
+- Platforms / input: <...>
+- Repo: <url> · Push policy: <...>
+- Unity CLI: `<path>` (drive the open Editor via the `unity:unity-cli` skill).
 
-## Game concept
+## Commands
 
-<3–6 lines: what the player does moment to moment, the loop, the hook, the look.>
+- Compile: `unity command recompile` → `recompile_status` (done = `up_to_date`)
+- Tests: `unity command run_tests --mode EditMode` (never while the owner's scene is unsaved)
+- Build: <...>
 
-## Design decisions
+## Map
 
-_(locked only; `YYYY-MM-DD — **Decision.** Detail. (Why.)`; "tunable" = owner finds the value by playing)_
+- `Assets/_Project/` — all game content (see `unity-architecture`).
+- `ArtSource/` — raw source art, outside Unity.
+- `docs/decisions/` — locked decisions, one file each. `docs/status.md` — status & next steps.
+- `.claude/rules/` — lessons per tool/folder. `.claude/skills/` — "how to add X" recipes.
 
-**Core loop**
--
+## Concept
 
-**Controls & feel**
--
-
-**Presentation**
--
-
-## Open questions
-
--
-- **Awaiting owner confirmation** (built on Claude's proposals):
-  -
-
-## Current status & next steps (keep this updated)
-
-_Last updated YYYY-MM-DD: <one line>._
-
-- **Next:**
-
-## Architecture conventions
-
-- All project content in `Assets/_Project/` (`Scripts/Runtime`, `Scripts/Editor`, `Tests/EditMode`, `Art`, `Audio`, `Prefabs`, `Data`, `Scenes`, `Settings`, `Input`).
-- Namespaces mirror folders under `Game`.
-- Tuning and content definitions live in ScriptableObjects under `Data/`; no gameplay constants in code.
-- Pure rules in plain C# classes (EditMode-tested); MonoBehaviours are thin glue.
-- _(add "how to add a new X" recipes as systems appear)_
-
-## Git
-
-- Commit small, focused changes with clear messages, only when the owner agrees.
-- Push policy: <ask / after each verified commit>.
+<3–5 lines: what the player does moment to moment, the loop, the hook, the look.>
+**Pillars:** 1. … 2. … 3. …

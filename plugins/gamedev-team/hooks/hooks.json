@@ -1,0 +1,26 @@
+{
+  "description": "gamedev-team guards: block risky git commands, ask before hand-editing Unity YAML, and give each session a short git context. Active only in repos with a TEAM.md at the root.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/guard-git.sh\"", "timeout": 10 }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/guard-unity-yaml.sh\"", "timeout": 10 }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-context.sh\"", "timeout": 15 }
+        ]
+      }
+    ]
+  }
+}

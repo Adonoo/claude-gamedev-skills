@@ -1,78 +1,44 @@
 # <Project name> — <one-line pitch>
 
+<!-- Shared by every member's Claude. Keep under ~150 lines.
+     Status & handoffs → GitHub issues/PRs. Decisions → docs/decisions/. Lessons → .claude/rules/.
+     Recipes → .claude/skills/. Humans: read docs/HOW-WE-WORK.md. -->
+
+@TEAM.md
+
 ## How we work (read first — applies to every member's Claude)
 
-- **Know who you work for.** Read `CLAUDE.local.md` for the current member's name and areas. If it's missing, ask.
-- **Ask before assuming; challenge, never overrule.** Final say per topic is in the Decision map. Between members, lay out options; never pick a side.
-- **Stay in your areas.** Only edit areas owned by the current member. Shared files (input actions, ProjectSettings, shared prefabs, this file) change in small separate commits that are announced to the team.
-- **One scene = one owner.** Never edit another member's scene. Shared content goes into prefabs.
-- **Small vertical slices** on a feature branch: plan → implement → verify → playtest → fix → PR.
-- **Game feel is judged by the area owner**; Claude says what to test and which values are tunable.
+- **Know who you work for.** Read `CLAUDE.local.md` (name, handle, experience). Missing → ask.
+- **Ask before assuming; challenge, never overrule.** Search `docs/decisions/` before asking. Deciders are in `TEAM.md`; between members lay out options, never pick a side.
+- **Work comes from issues.** One issue = one branch `<name>/<n>-<slug>` = one PR. Status and handoffs go into the issue/PR, not into this file.
+- **Stay inside your issue's files.** Changes elsewhere → a request to that file's owner. Shared files (ProjectSettings, Packages, input actions, layers, shared prefabs, `.claude/`, this file) → small separate commits, called out in the PR.
+- **Scenes are locked** (`git lfs lock`) before editing and unlocked after merge. Never edit a scene locked by someone else.
 - **Tuning values and levels belong to their owners.** Propose; don't change.
-- **Git:** pull/rebase `main` at session start; `git status` before work; stage by path, never `git add -A`; one slice per PR; never force-push shared branches.
-
-## Decision map
-
-| Topic | Final say |
-|---|---|
-| Vision / overall design | |
-| Game design: <system> | |
-| Art direction | |
-| Audio | |
-| Code architecture | |
-| Levels | |
-
-## Areas
-
-| Area | Owner | Folders / scenes |
-|---|---|---|
-| | | |
-
-## Verification lessons (learned the hard way)
-
--
+- **Small vertical slices**: plan → implement → verify → playtest → PR → teammate playtest → merge.
+- **Feel is judged by people.** Every PR carries a playtest checklist someone else can follow.
+- **Git:** `git status` first; stage by path; never on `main`; never force-push.
+- **Explain as much as the member's `Explain:` level asks for.**
 
 ## Project facts
 
-- Unity <version> (everyone the same), <render pipeline>, Input System, Force Text, visible meta, Smart Merge configured.
-- Repo: <url> · Branches: `<name>/<feature>` → PR → `main` · Reviews: area owner approves.
-- Comms: <where decisions are discussed>.
+- Unity <exact version> (everyone the same), URP <3D>, Input System, Force Text, visible meta, Smart Merge.
+- Physics layers: <table or "see decision 000X">.
+- Repo: <url> · Board: <url> · Comms: <channel>.
+- Unity CLI: drive the open Editor via the `unity:unity-cli` skill.
 
-## Game concept
+## Commands
 
-<3–6 lines.> **Pillars:** 1. 2. 3.
+- Compile: `unity command recompile` → `recompile_status` (done = `up_to_date`)
+- Tests: `unity command run_tests --mode EditMode` (never while the member's scene is unsaved)
+- Build: <menu item / command> → `Builds/` (git-ignored)
 
-## Design decisions
+## Map
 
-_(`YYYY-MM-DD — **Decision.** Detail. (Why. Decided by <name>.)`)_
--
+- `Assets/_Project/` — content by area: `Scripts/Runtime/<Area>`, `Data/<Area>`, `Prefabs/<Area>`, `Scenes/` (bootstrap + content scenes).
+- `ArtSource/` — `.blend`, `.psd` sources (LFS, lockable). Exports go to `Assets/_Project/Art/`.
+- `docs/decisions/` — locked decisions. `docs/HOW-WE-WORK.md` — the human handbook.
+- `.claude/rules/` — lessons (path-scoped). `.claude/skills/` — project recipes ("add an enemy", "new level").
 
-## Open questions
+## Concept
 
-- _(question — who decides)_
-- **Awaiting confirmation:**
-
-## Current status (per area)
-
-_Last updated YYYY-MM-DD._
-
-| Area | Status | Next |
-|---|---|---|
-| | | |
-
-## Architecture conventions
-
-- Content in `Assets/_Project/`; namespaces under `Game`; tuning in ScriptableObjects under `Data/`; pure rules in plain C# with EditMode tests; MonoBehaviours as glue.
-- Cross-area communication through explicit interfaces / ScriptableObject event channels, documented here.
-- _(add "how to add a new X" recipes)_
-
----
-
-### `CLAUDE.local.md` snippet (each member, git-ignored)
-
-```markdown
-# Me
-- I'm <name>. I own: <areas>. Final say on: <topics from the decision map>.
-- My feature branch prefix: <name>/
-- Preferences: <e.g. explain Unity concepts as you go / be brief>
-```
+<3–5 lines.> **Pillars:** 1. … 2. … 3. …

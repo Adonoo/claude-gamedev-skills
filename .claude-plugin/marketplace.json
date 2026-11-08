@@ -1,11 +1,11 @@
 {
   "name": "gamedev-workflow",
-  "description": "A Claude Code workflow for making Unity games: critical design partner, small playable slices, owner playtests, protected tuning, living CLAUDE.md.",
+  "description": "A Claude Code workflow for making Unity games alone or in a team: critical design partner, small playable slices, playtests by people, protected tuning, small project memory, safe shared repos.",
   "owner": { "name": "Adonoo" },
   "plugins": [
     { "name": "gamedev-core", "source": "./plugins/gamedev-core", "description": "Shared skills every mode needs. Always install this one." },
     { "name": "gamedev-jam", "source": "./plugins/gamedev-jam", "description": "Game jam mode (1-3 weeks). Install together with gamedev-core." },
     { "name": "gamedev-solo", "source": "./plugins/gamedev-solo", "description": "Long-term solo project mode. Install together with gamedev-core." },
-    { "name": "gamedev-team", "source": "./plugins/gamedev-team", "description": "Long-term team project in one shared repo. Install together with gamedev-core." }
+    { "name": "gamedev-team", "source": "./plugins/gamedev-team", "description": "Team project in one shared repo, any size. Install together with gamedev-core." }
   ]
 }

@@ -1,80 +1,105 @@
 ---
 name: team-kickoff
-description: Start or restructure a long-term group game project where several people (each with their own Claude) work in one shared Unity repo — roles and area ownership, who decides what, branch and merge strategy, Unity scene/prefab merge safety, shared CLAUDE.md plus personal CLAUDE.local.md, and project setup. Use when a team starts a shared Unity project, adds members, or keeps running into merge conflicts or conflicting decisions.
+description: Set up or restructure a shared Unity game project for a group of any size (1 to ~8 people, specialists or generalists) where each person works with their own Claude — roster and experience levels, who decides what, ownership by issue and scene locks, GitHub issues/board/PR flow, Unity merge safety and LFS, the repo scaffold (CLAUDE.md, TEAM.md, decision records, .claude/settings.json with plugins and hooks, PR and issue templates) and the first week's plan. Use when a team starts a shared Unity project, moves an existing project to this workflow, adds members, or keeps running into merge conflicts or conflicting decisions.
 ---
 
 # Team kickoff
 
-In a team, every rule from `gamedev-core` still holds, but **"the owner" becomes "the owner of
-that area"**, and most damage comes from two people (or two Claudes) touching the same file.
-This kickoff is usually run by one person with the others present or answering async; record
-everything in the shared CLAUDE.md.
+Every rule from `gamedev-core` still holds; in a team, **"the owner" becomes "whoever owns that
+file right now"**, and most damage comes from two people (or two Claudes) touching the same
+file or deciding the same thing differently. This kickoff is usually run by one person (the
+**lead**) with the others present or answering async. Ask in rounds with `AskUserQuestion`.
+It is about **how the team works**, not the game design — the concept gets its own session.
 
-## Round 1 — People & authority
+## Scale the process to the team
 
-- Members, roles, time zones, hours per week.
-- **Decision map**: who has the final say on what (overall vision, game design per system,
-  art direction, audio, code architecture, levels). One name per row. Disagreements go to the
-  person on that row — Claude never picks a side, it lays out options.
-- How the team communicates decisions (Discord channel? PR comments?), and that settled ones
-  always land in CLAUDE.md.
+| Team | Reviews | Playtest of a PR | Areas |
+|---|---|---|---|
+| 1 | self-merge after own playtest | self | none |
+| 2–3 | 1 teammate approves | the reviewer | optional |
+| 4–6 | 1 teammate approves; architecture seams by the architecture decider | another teammate (rotate) | by folder, per issue |
+| 7+ | area owner approves | area owner + one other | mandatory, durable |
 
-## Round 2 — Areas & ownership
+Pick the row in round 1 and write it into `TEAM.md`. Grow into the next row when it hurts,
+not before.
 
-Split the project into **areas with one owner each**, matching folders where possible:
+## Round 1 — People & decisions
 
-| Area | Owner | Folders |
-|---|---|---|
-| Player & movement | | `Scripts/Runtime/Player`, `Data/Player` |
-| Levels | | `Scenes/Levels/<name>_*` |
-| UI | | `UI/`, `Scripts/Runtime/UI` |
-| Art | | `Art/`, `ArtSource/` |
-| ... | | |
+- Members: name, GitHub handle, **experience** (Unity: none / some / solid; with Claude: none /
+  some / solid), interests, hours per week, time zone. "Everyone does everything" is a valid
+  answer — then roles are per issue, not per person.
+- **Decision map**, as small as possible:
+  - **Vision & tie-break** — one person. Breaks deadlocks, guards the pillars.
+  - **Architecture seams** — one person (usually the most experienced coder). Decides how
+    systems talk to each other (see `unity-architecture` → seams), packages, project settings.
+  - **Everything inside an issue** — the issue's assignee, within the agreed design.
+  - **Anything that changes another person's work or the pillars** — the team (weekly sync or
+    an async `decision` issue with a 48 h window), recorded by whoever raised it.
+- Where the team talks (Discord channel, etc.). Rule: a decision isn't real until it's a record
+  in `docs/decisions/`.
 
-Rules that follow from it (write them into CLAUDE.md):
+## Round 2 — Ownership without a fixed org chart
 
-- Claude only edits areas of the person it's working for, unless that person coordinated it
-  with the area owner. Shared files (input actions, project settings, shared prefabs, CLAUDE.md)
-  are changed in **small separate commits** and announced.
-- **One scene = one owner at a time.** Level scenes are named after/claimed by their owner.
-  Shared things are **prefabs**, not scene objects; work in your own scene and reference
-  prefabs, or use additive scenes.
-- Tuning assets have an owner too; others propose values.
+- **Issue = ownership.** Whoever is assigned an issue owns the files that issue touches until
+  it's merged. Two open issues must not plan to touch the same files; if they do, sequence them.
+- **Scenes are locked**, not shared: `*.unity` is marked `lockable` in `.gitattributes`; you
+  `git lfs lock` a scene before editing and unlock after merge. Lockable files are read-only
+  until locked, which stops accidental edits (by people and by Claude). **Test locking in week
+  1** with a throwaway scene: lock on one machine, try to edit on another.
+- **Tuning assets**: owned by whoever's issue introduced them, listed in `TEAM.md` once they
+  matter. Others propose values.
+- Durable areas (a person owns "Enemies" for months) only once someone sticks with a system.
 
-## Round 3 — Git strategy
+## Round 3 — GitHub flow
 
-- **Short-lived feature branches** (`<name>/<feature>`), merged via pull request after the
-  slice is playtested. `main` always opens and plays.
-- Pull/rebase from `main` at the start of every session.
-- PR = one slice, small. Review with the `code-review` skill + a human skim; the area owner
-  approves.
-- **Unity merge safety** (do once per machine/repo):
-  - Force Text serialization, visible meta files.
-  - Configure Unity's **Smart Merge** (`UnityYAMLMerge`, shipped in the Editor's
-    `Data/Tools` folder) as git mergetool for `.unity`, `.prefab`, `.asset`. Look up the exact
-    config for the installed Editor version in Unity's "Smart merge" manual page.
-  - Git LFS for binaries; consider `git lfs lock` for binary files two people might edit.
-  - Never resolve a scene/prefab conflict by hand-editing YAML blindly: take one side, then
-    redo the other side's change in the Editor, or ask the owner.
-- `.meta` files always committed with their asset; never delete a `.meta` someone else
-  created.
+- Private repo; `main` protected (PR required, no force push). `main` must always open and
+  play — a broken `main` is everyone's top priority.
+- **Issues** for all work: templates `slice`, `bug`, `decision`. Labels: `slice`, `bug`,
+  `decision`, `good-first-issue`, `needs-playtest`, `area:<x>`.
+- **Board** (GitHub Projects): Backlog → Ready → In progress → Review & playtest → Done.
+- Branches `<name>/<issue>-<slug>`, one slice per PR, squash merge, branch deleted after merge.
+- Status, handoffs and open questions live **in issues and PRs**, never in CLAUDE.md.
 
-## Round 4 — Shared vs personal instructions
+## Round 4 — Unity & repo facts *(decide once)*
 
-- `CLAUDE.md` (shared, committed): the team's rules, decisions, areas, status per area. Changes
-  to the **How we work** section are agreed by the team.
-- `CLAUDE.local.md` (personal, add to `.gitignore`): the person's own preferences, their
-  name/role ("I'm <name>, I own Player & UI"), machine paths.
-- Every member installs the same plugins (`gamedev-core`, `gamedev-team`, `unity`).
+- Unity version (everyone exactly the same), render pipeline, 2D/3D. For 3D go through the
+  "decide early" items in `gamedev-core:unity-3d` (controller, camera, lighting, art pipeline).
+- LFS: which file types, and the host's current free storage/bandwidth limits. 3D assets eat
+  quota fast (every clone downloads them). If it's tight: keep source files (`.blend`, `.psd`)
+  in LFS only when needed, or agree on a paid plan/other host early.
+- Smart Merge configured on every machine (see `gamedev-core:setup-check`).
+- Builds: who makes the weekly build of `main` (rotate the **build captain**), where it's shared.
 
-## Setup
+## Setup (the lead, one session)
 
-- New project: `unity:new-unity-project` (one person), push, everyone clones.
-- Copy `references/CLAUDE.team.template.md` to the root as `CLAUDE.md`, fill it in.
-- Each member creates their `CLAUDE.local.md` from the snippet in the template.
-- First commit + push; branch protection on `main` if the host allows.
+1. Create the project with `unity:new-unity-project` (or audit an existing one against
+   `gamedev-core:unity-architecture`; propose a migration, don't restructure without OK).
+2. Copy from `references/` into the repo and fill them in:
+   - `CLAUDE.team.template.md` → `CLAUDE.md` (keep it under ~150 lines)
+   - `TEAM.template.md` → `TEAM.md`
+   - `HOW-WE-WORK.template.md` → `docs/HOW-WE-WORK.md` (the human handbook)
+   - `decision.template.md` → `docs/decisions/0000-template.md`, then one record per decision
+     from rounds 1–4
+   - `settings.template.json` → `.claude/settings.json` (plugins for everyone)
+   - `lessons.template.md` → `.claude/rules/lessons.md`; `unity-editor.rules.md` →
+     `.claude/rules/unity-editor.md`
+   - `github/` → `.github/` (PR template, issue templates)
+   - `gitattributes.template` → `.gitattributes`, `gitignore.template` → `.gitignore`
+   - `CLAUDE.local.template.md` stays a template; each member makes their own.
+3. Folder scaffold (`unity-architecture` layout, empty folders get a `.gitkeep`), Force Text,
+   visible meta, the scale dummy prefab for 3D.
+4. First commit, push, protect `main`, create labels and the board (`gh label create ...`,
+   `gh project create ...` — ask before creating anything on GitHub), invite members.
+5. Each member runs `/gamedev-team:team-onboarding`.
 
-## Hand-off
+## Hand-off: the first week
 
-Summarise the decision map, areas and git rules; propose each member's first slice so they
-don't overlap. Continue with `team-workflow`.
+Propose a plan that keeps people out of each other's files:
+
+- **Lead**: the *walking skeleton* — bootstrap scene, player moves in a greybox room, camera,
+  one build. Everything else hangs off this, so it comes first and alone.
+- **Others** (in parallel, no overlap with the skeleton): onboarding, then `good-first-issue`s
+  that teach the loop without touching core code — a greybox test level in their own scene, a
+  data asset with tuning, a placeholder model through the import pipeline, a sound list.
+- End of week 1: first weekly sync (`/gamedev-team:team-sync`), playtest the skeleton together,
+  then the concept session decides the first real slices.

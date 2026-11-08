@@ -68,5 +68,7 @@ that. For CLI command syntax, use the official `unity:unity-cli` skill; this ski
 
 ## When something goes wrong
 
-Add the lesson to CLAUDE.md "Verification lessons" with the date and what happened
-(see `project-memory`). Tell the user plainly what broke and what you did about it.
+Add the lesson with the date and what happened to the project's lessons — usually
+`.claude/rules/unity-editor.md` (path-scoped to `Assets/**`); older projects may still keep a
+"Verification lessons" section in CLAUDE.md (see `project-memory`). Tell the user plainly what
+broke and what you did about it.

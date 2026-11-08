@@ -1,0 +1,19 @@
+{
+  "extraKnownMarketplaces": {
+    "gamedev-workflow": {
+      "source": { "source": "github", "repo": "Adonoo/claude-gamedev-skills" }
+    }
+  },
+  "enabledPlugins": {
+    "unity@claude-plugins-official": true,
+    "gamedev-core@gamedev-workflow": true,
+    "gamedev-team@gamedev-workflow": true
+  },
+  "permissions": {
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)"
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "gamedev-core",
-  "version": "0.1.0",
-  "description": "Shared workflow for making Unity games with Claude: design partner, project memory (CLAUDE.md), slice loop, Unity safety and verification rules, architecture conventions, git hygiene, onboarding.",
+  "version": "0.2.0",
+  "description": "Shared workflow for making Unity games (2D and 3D) with Claude: design partner, small project memory (short CLAUDE.md, decision records, path-scoped lessons), slice loop, Unity safety and verification rules, architecture and 3D conventions, git hygiene, onboarding.",
   "author": { "name": "Adonoo" },
-  "keywords": ["unity", "gamedev", "workflow"]
+  "keywords": ["unity", "gamedev", "workflow", "3d"]
 }

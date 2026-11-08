@@ -1,7 +1,7 @@
 {
   "name": "gamedev-team",
-  "version": "0.1.0",
-  "description": "Long-term team project mode: shared repo with area ownership, decision map, branch/PR flow and Unity merge safety. Install with gamedev-core.",
+  "version": "0.2.0",
+  "description": "Team mode for any size (1-8): issue-based ownership, scene locks, GitHub issue/PR flow with teammate playtests, decision records, onboarding for beginners, weekly sync, and hooks that block risky git commands. Install with gamedev-core.",
   "author": { "name": "Adonoo" },
   "keywords": ["unity", "gamedev", "workflow", "team"]
 }
